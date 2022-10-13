@@ -3,8 +3,7 @@ package com.in28minutes.spring.learnspringframework;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.in28minutes.spring.learnspringframework.game.GameRunner;
-import com.in28minutes.spring.learnspringframework.game.PacManGame;
-import com.in28minutes.spring.learnspringframework.game.SuperContraGame;
+import com.in28minutes.spring.learnspringframework.game.MarioGame;
 
 @SpringBootApplication
 public class LearnSpringFrameworkApplication {
@@ -13,10 +12,8 @@ public class LearnSpringFrameworkApplication {
 		//SpringApplication.run(LearnSpringFrameworkApplication.class, args);
 		
 		//MarioGame game = new MarioGame();
-		//SuperContraGame game = new SuperContraGame();
-		PacManGame game = new PacManGame();
+		SuperContraGame game = new SuperContraGame();
 		GameRunner runner = new GameRunner(game);
-		
 		runner.run();
 	}
 

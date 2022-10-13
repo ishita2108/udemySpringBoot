@@ -1,0 +1,6 @@
+package com.in28minutes.spring.learnspringframework.game;
+
+public interface GameRunnerInterface {
+	public void run();
+
+}
