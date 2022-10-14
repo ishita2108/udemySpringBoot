@@ -1,10 +1,10 @@
 package com.in28minutes.springboot.myfirstwebapp.hello;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class SayHelloController {
 	
 	@RequestMapping("/say-hello")
@@ -30,5 +30,12 @@ public class SayHelloController {
 		return sb.toString();
 		
 	}
-
+	
+	@RequestMapping("/say-hello-jsp")
+	public String sayHelloJsp() {
+		return "sayHello";
+		
+	}
+	
+	
 }
