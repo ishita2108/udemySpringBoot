@@ -12,6 +12,11 @@ public class BusinessService {
 	
 	@Autowired
 	private DataService dataService;
+	
+	public BusinessService(DataService dataService) {
+		this.dataService = dataService;
+	}
+
 	public long calculateSum() {
 		List<Integer> data = dataService.getData();
 		return data.parallelStream().reduce(Integer::sum).get();
