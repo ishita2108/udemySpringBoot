@@ -10,34 +10,35 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 @SessionAttributes("name")
-public class LoginController {
+public class WelcomeController {
 
 	@Autowired
 	private AuthenticationService authenticationService;
 	
-	public LoginController(AuthenticationService authenticationService) {
+	public WelcomeController(AuthenticationService authenticationService) {
 		this.authenticationService = authenticationService;
 	}
 
 	// private Logger logger = LoggerFactory.getLogger(getClass());
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginJsp() {
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String goToWelcomePage( ModelMap map) {
 		// logger.debug("Request param is {}", name);
 		// logger.info("I want this printed at info level.Request param is {}", name);
-		return "login";
+		map.put("name","ishita");
+		return "welcome";
 
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String goToWelcomePage(@RequestParam String name, @RequestParam String password, ModelMap map) {
-		map.put("name", name);
-		if (authenticationService.authenticate(name, password)) {
-			return "welcome";
-		}
-		map.put("errorMessage", "InvalidCredntials! Please Try Again.");
-		return "login";
-
-	}
+//	@RequestMapping(value = "/login", method = RequestMethod.POST)
+//	public String goToWelcomePage(@RequestParam String name, @RequestParam String password, ModelMap map) {
+//		map.put("name", name);
+//		if (authenticationService.authenticate(name, password)) {
+//			return "welcome";
+//		}
+//		map.put("errorMessage", "InvalidCredntials! Please Try Again.");
+//		return "login";
+//
+//	}
 
 }
