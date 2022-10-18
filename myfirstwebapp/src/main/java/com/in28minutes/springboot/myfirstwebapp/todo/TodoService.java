@@ -18,13 +18,14 @@ public class TodoService {
 
 	static {
 		todos.add(new Todo(tododsCount++, "ishita", "Learn Java", LocalDate.now().plusYears(1), false));
-		todos.add(new Todo(tododsCount++, "ishita", "Learn Spring", LocalDate.now().plusYears(1), false));
+		todos.add(new Todo(tododsCount++, "gaurav", "Learn Spring", LocalDate.now().plusYears(1), false));
 		todos.add(new Todo(tododsCount++, "ishita", "Learn Spring Boot", LocalDate.now().plusYears(1), false));
 		todos.add(new Todo(tododsCount++, "ishita", "Learn React", LocalDate.now().plusYears(1), false));
 	}
 	
 	public List<Todo> findByUsername(String username){
-		return todos;
+		Predicate<Todo> predicate = todo -> todo.getUsername().equalsIgnoreCase(username) ;
+		return todos.stream().filter(predicate).toList();
 	}
 	
 	public void addTodo(String username, String description, LocalDate targetDate, boolean isDone) {
@@ -44,7 +45,7 @@ public class TodoService {
 
 	public Todo findById(int id) {
 		Predicate<Todo> predicate = todo -> todo.getId()== id;
-		Todo todo = todos.parallelStream().filter(predicate).findFirst().get();
+		Todo todo = todos.stream().filter(predicate).findFirst().get();
 		return todo;
 	}
 
