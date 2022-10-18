@@ -1,0 +1,33 @@
+package com.in28minutes.springboot.myfirstwebapp.todo;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class TodoService {
+
+	private static List<Todo> todos = new ArrayList();
+	
+	private static int tododsCount = 1;
+
+	static {
+		todos.add(new Todo(tododsCount++, "ishita", "Learn Java", LocalDate.now().plusYears(1), false));
+		todos.add(new Todo(tododsCount++, "ishita", "Learn Spring", LocalDate.now().plusYears(1), false));
+		todos.add(new Todo(tododsCount++, "ishita", "Learn Spring Boot", LocalDate.now().plusYears(1), false));
+		todos.add(new Todo(tododsCount++, "ishita", "Learn React", LocalDate.now().plusYears(1), false));
+	}
+	
+	public List<Todo> findByUsername(String username){
+		return todos;
+	}
+	
+	public void addTodo(String username, String description, LocalDate targetDate, boolean isDone) {
+		Todo todo = new Todo(tododsCount++, username, description, targetDate,isDone);
+		todos.add(todo);
+		
+	}
+
+}

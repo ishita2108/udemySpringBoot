@@ -3,11 +3,9 @@
 		<title> Welcome Page</title>
 	</head>
 	<body>
-		<div>
-			Welcome to Spring Boot!
-		</div>
-		<div>
-			<h2>Your Name : ${name}</h2>
+		<div class="container">
+			<h1>Welcome ${name}</h1>
+			<a href="list-todos">Manage</a> your todos
 		</div>
 	</body>
 </html>
