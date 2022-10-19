@@ -19,13 +19,11 @@ import jakarta.validation.Valid;
 @SessionAttributes("name")
 public class TodoControllerJpa {
 
-	private TodoService todoService;
 		
 	private TodoRepository todoRepository;
 
 	@Autowired
-	public TodoControllerJpa(TodoService todoService, TodoRepository todoRepository) {
-		this.todoService = todoService;
+	public TodoControllerJpa(TodoRepository todoRepository) {
 		this.todoRepository = todoRepository;
 	}
 
@@ -53,7 +51,6 @@ public class TodoControllerJpa {
 		String username = getLoggedinUsername(model);
 		todo.setUsername(username);
 		todoRepository.save(todo);
-		//todoService.addTodo(username, todo.getDescription(), todo.getTargetDate(), todo.isDone());
 		return "redirect:list-todos";
 	}
 
@@ -79,7 +76,6 @@ public class TodoControllerJpa {
 		String username = getLoggedinUsername(model);
 		todo.setUsername(username);
 		todoRepository.save(todo);
-		//todoService.updateTodo(todo);
 		return "redirect:list-todos";
 	}
 
