@@ -95,4 +95,15 @@ public class SurveyService {
 		
 	}
 
+	public String updateSurveyQuestion(String id, String qid, Question question) {
+		List<Question> questions = getAllSurveyQuestion(id);
+		if(questions == null) {
+			return null;
+		}
+		Predicate<Question> predicate = q -> q.getId().equals(qid);
+		questions.removeIf(predicate);
+		questions.add(question);
+		return qid;
+	}
+
 }

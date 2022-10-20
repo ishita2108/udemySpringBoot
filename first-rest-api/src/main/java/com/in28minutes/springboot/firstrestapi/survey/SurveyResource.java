@@ -75,6 +75,15 @@ public class SurveyResource {
 		}
 		return ResponseEntity.noContent().build();
 	}
+	
+	@RequestMapping(value = "/surveys/{id}/questions/{qid}", method = RequestMethod.PUT)
+	public ResponseEntity<Object> updateSurveyQuestion(@PathVariable String id, @PathVariable String qid, @RequestBody Question question){
+		String que = surveyService.updateSurveyQuestion(id, qid, question);
+		if(que == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok().build();
+	}
 
 
 }
