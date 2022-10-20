@@ -3,6 +3,8 @@ package com.in28minutes.springboot.firstrestapi.survey;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Base64;
+
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -22,12 +24,19 @@ class SurveyResourceIT {
 	private static String ALL_QUESTIONS_URL = "/surveys/Survey1/questions";
 	private static String SPECIFIC_SURVEY_URL = "/surveys/Survey1";
 	private static String ALL_SURVEYS_URL = "/surveys";
+	
+	
+	
 	@Autowired
 	private TestRestTemplate template;
 
 	@Test
 	void getSurveyQuestionsById_basicScenario() throws JSONException {
-		ResponseEntity<String> responseEntity = template.getForEntity(SPECIFIC_QUESTION_URL, String.class);
+		
+		HttpHeaders headers = createHttpContentTypeAndAuthorizationHeader();
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		ResponseEntity<String> responseEntity = template.exchange(SPECIFIC_QUESTION_URL, HttpMethod.GET, entity, String.class);
+		//ResponseEntity<String> responseEntity = template.getForEntity(SPECIFIC_QUESTION_URL, String.class);
 		String expectedResponse = """
 				{"id":"Question1",
 				"description":"Most Popular Cloud Platform Today",
@@ -41,7 +50,10 @@ class SurveyResourceIT {
 
 	@Test
 	void getSurveyAllQuestions_basicScenario() throws JSONException {
-		ResponseEntity<String> responseEntity = template.getForEntity(ALL_QUESTIONS_URL, String.class);
+		HttpHeaders headers = createHttpContentTypeAndAuthorizationHeader();
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		ResponseEntity<String> responseEntity = template.exchange(ALL_QUESTIONS_URL, HttpMethod.GET, entity, String.class);
+		//ResponseEntity<String> responseEntity = template.getForEntity(ALL_QUESTIONS_URL, String.class);
 		String expectedResponse = """
 									[
 						  {
@@ -64,7 +76,10 @@ class SurveyResourceIT {
 
 	@Test
 	void getSurveyById_basicScenario() throws JSONException {
-		ResponseEntity<String> responseEntity = template.getForEntity(SPECIFIC_SURVEY_URL, String.class);
+		HttpHeaders headers = createHttpContentTypeAndAuthorizationHeader();
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		ResponseEntity<String> responseEntity = template.exchange(SPECIFIC_SURVEY_URL, HttpMethod.GET, entity, String.class);
+		//ResponseEntity<String> responseEntity = template.getForEntity(SPECIFIC_SURVEY_URL, String.class);
 		String expectedResponse = """
 								{
 				    "id": "Survey1",
@@ -91,7 +106,10 @@ class SurveyResourceIT {
 
 	@Test
 	void getAllSurvey_basicScenario() throws JSONException {
-		ResponseEntity<String> responseEntity = template.getForEntity(ALL_SURVEYS_URL, String.class);
+		HttpHeaders headers = createHttpContentTypeAndAuthorizationHeader();
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		ResponseEntity<String> responseEntity = template.exchange(ALL_SURVEYS_URL, HttpMethod.GET, entity, String.class);
+		//ResponseEntity<String> responseEntity = template.getForEntity(ALL_SURVEYS_URL, String.class);
 		String expectedResponse = """
 							[
 				    {
@@ -134,16 +152,37 @@ class SurveyResourceIT {
 	}
 				""";
 		
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json");
-		
+		HttpHeaders headers = createHttpContentTypeAndAuthorizationHeader();
 		HttpEntity<String> entity = new HttpEntity<String>(requestBody, headers);
 		ResponseEntity<String> responseEntity = template.exchange(ALL_QUESTIONS_URL, HttpMethod.POST, entity, String.class);
 		assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
 		String locationHeader = responseEntity.getHeaders().get("Location").get(0);
 		assertTrue(locationHeader.contains("/surveys/Survey1/questions"));
 		
-		template.delete(locationHeader);
+		ResponseEntity<String> responseEntityDelete = template.exchange(locationHeader, HttpMethod.DELETE, entity, String.class);
+		assertTrue(responseEntityDelete.getStatusCode().is2xxSuccessful());
+		//template.delete(locationHeader);
+		
+	}
+
+	private HttpHeaders createHttpContentTypeAndAuthorizationHeader() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+//		headers.add("Authorization", "Basic aXNoaXRhOmlrYQ==");
+		headers.add("Authorization", "Basic " + performBasicAuthEncoding("ishita", "ika"));
+		return headers;
+	}
+	
+	
+	String performBasicAuthEncoding(String user, String password) {
+		
+		String combined = user + ":" + password;
+		//Base64 Encoding -> Bytes
+		byte[] encodedBytes = Base64.getEncoder().encode(combined.getBytes());	
+		
+		//Bytes -> String
+			
+		return new String(encodedBytes);
 		
 	}
 
